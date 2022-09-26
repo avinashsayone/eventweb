@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="event management home page.">
+    <meta name="author" content="Devcrud">
+    <title>Events web</title>
+    <!-- font icons -->
+    <link rel="stylesheet" href="{% static 'vendors/themify-icons/css/themify-icons.css' %}">
+    <!-- Bootstrap + JoeBLog main styles -->
+	<link rel="stylesheet" href="{% static 'css/joeblog.css' %}">
+</head>
+<body data-spy="scroll" data-target=".navbar" data-offset="40" id="home">
+    
+    <!-- page First Navigation -->
+    <!-- End Of First Navigation -->
+
+    <!-- Page Second Navigation -->
+    <nav class="navbar custom-navbar navbar-expand-md navbar-light bg-primary sticky-top">
+        <div class="container">
+            <button class="navbar-toggler ml-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse text-center" id="navbarSupportedContent">
+                <ul class="navbar-nav">                     
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Home</a>
+                    </li>
+                    {% if permission %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Events
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="{% url 'addevent' %}">Add Event</a>
+                                {% comment %} <a class="dropdown-item" href="#">Delete Event</a> {% endcomment %}
+                                {% comment %} <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="#">Something else here</a> {% endcomment %}
+                            </div>
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'login' %}">Login</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <!-- End Of Page Second Navigation -->
+    
+    <!-- page-header -->
+    <header class="page-header"></header>
+    <!-- end of page header -->
+
+    <div class="container">
+        <hr>
+        <div class="page-container text-center">
+            <div class="page-content text-center">
+                <div>
+                    <iframe  name="targetframe" allowTransparency="true" scrolling="no" frameborder="0" >
+                    </iframe>
+                  </div>
+                <hr>
+                {% for post in data.object_list %}
+                {# note that the list of posts are in the page_obj.object_list not page_obj #}
+                {% if post.event_image %}
+                    <div class="blog-media">
+
+                        <img src="{{ post.event_image.url }}" alt="" class="w-100" width="500" height="600">
+                        {% comment %} <a href="#" class="badge badge-primary">#Placeat</a>         {% endcomment %}
+                    </div> 
+                {% endif %}
+                  <h5 class="card-title text-center">{{post.event_name}}</h5>  
+                  <small class="small text-muted">{{post.date}}
+                    <span class="px-2">-</span>{{post.time}}
+                    
+                    <p class="my-2">{{post.description}}</p>
+                    {% comment %} <a href="#" class="text-muted">34 Comments</a> {% endcomment %}
+                </small>
+                <div class="card-footer p-0 text-center">
+                    {% comment %} <a href="single-post.html" class="btn btn-outline-dark btn-sm">READ MORE</a> {% endcomment %}
+                    {% if permission %}
+                    
+                        <a href="{% url 'deleted' post.id %}" class="btn btn-outline-dark btn-sm">Delete</a>
+                    {% endif %}
+                </div>
+        
+                  <hr/>
+
+                    {% endfor %}
+                    {%if data.has_next %} {# whether the next page exists #}
+                    {% comment %} <h1>{{data.next_page_number}}</h1> {% endcomment %}
+                    {% comment %} <a href="?page={{data.next_page_number}}">></a> {% endcomment %}
+                    <a class="btn btn-primary btn-block my-4" href="?page={{data.next_page_number}}">Next</a>
+
+                    {% endif %}
+                    {%if data.has_previous %} {# whether the next page exists #}
+                    {% comment %} <h1>{{data.previous_page_number}}</h1> {% endcomment %}
+                    {% comment %} <a href="?page={{data.previous_page_number}}">></a> {% endcomment %}
+                    <a class="btn btn-primary btn-block my-4" href="?page={{data.previous_page_number}}">Previous</a>
+                    {% endif %}
+                                              
+                        </div>
+                    </div>
+                   
+                
+            </div>
+
+            
+        </div>
+    </div>
+
+    
+
+	<!-- core  -->
+    <script src="{% static 'vendors/jquery/jquery-3.4.1.js' %}"></script>
+    <script src="{% static 'vendors/bootstrap/bootstrap.bundle.js' %}"></script>
+
+    <!-- JoeBLog js -->
+    <script src="{% static 'js/joeblog.js' %}"></script>
+
+</body>
+</html>
