@@ -88,7 +88,7 @@ def login(request):
             request.session['pk']=login_obj[0]['pk']
             request.session['user_id'] = login_obj[0]['username']
             if login_obj[0]['password'] == password:
-                return HttpResponseRedirect('/home')
+                return HttpResponseRedirect('/')
             else:
                 return redirect('login')
                 return HttpResponseRedirect('/index')
@@ -104,9 +104,9 @@ def Logout(request):
         if request.session.has_key('user_id'):
             # del request.session['user_id']
             request.session.flush()
-            return HttpResponseRedirect('/home')
+            return HttpResponseRedirect('/')
         else:
-            return HttpResponseRedirect('/home')
+            return HttpResponseRedirect('/')
     except Exception as e:
         return HttpResponse(e)
 
@@ -128,11 +128,12 @@ def addevent(request):
             date=log.cleaned_data['date']
 
             time=log.cleaned_data['time']
-            event_pic = request.FILES['propic']
-            fs = FileSystemStorage()
-            name = fs.save(event_pic.name, event_pic)
-            name = 'media/' + name
-            path = os.path.join(BASE_DIR, name)
+            event_pic = request.FILES.get('propic')
+            if event_pic:
+                fs = FileSystemStorage()
+                name = fs.save(event_pic.name, event_pic)
+                name = 'media/' + name
+                path = os.path.join(BASE_DIR, name)
             user=register.objects.get(username=request.session.get('user_id'))
             events=event_details(event_name=event_name,description=description,date=date,time=time,user=user,event_image=event_pic)
             events.save()
@@ -196,7 +197,7 @@ def create_checkout_session(request):
     return HttpResponseRedirect(checkout_session['url'])
 
 def SuccessView(request):
-    return HttpResponseRedirect('/home')
+    return HttpResponseRedirect('/')
 def CancelledView(request):
     return HttpResponseRedirect('/addevent')
 
@@ -234,7 +235,7 @@ def Delete_data(request,id):
         event=event_details.objects.get(id=id)
         event.delete()
 
-        return HttpResponseRedirect('/home')
+        return HttpResponseRedirect('/')
     
     except Exception as e:
         print(e)   
