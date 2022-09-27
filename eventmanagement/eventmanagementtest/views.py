@@ -22,7 +22,9 @@ import os
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 def index(request):
-    data_obj= event_details.objects.get_queryset().order_by('-date')
+    payed_items=OrderDetail.objects.filter(has_paid=True).values('product')
+    data_list=[items['product'] for items in payed_items]
+    data_obj= event_details.objects.filter(id__in=data_list).order_by('-id')
     p = Paginator(data_obj, 3)
     page_number = request.GET.get('page')
     try:
@@ -190,7 +192,6 @@ def create_checkout_session(request):
     order.product = product[0]
     order.stripe_payment_intent = checkout_session['payment_intent']
     order.amount = int(20 * 100)
-    order.has_paid = True
     order.save()
 
     # return JsonResponse({'data': checkout_session})
@@ -198,6 +199,10 @@ def create_checkout_session(request):
     return HttpResponseRedirect(checkout_session['url'])
 
 def SuccessView(request):
+    product=event_details.objects.latest('id')
+    order=OrderDetail.objects.get(product=product)
+    order.has_paid=True
+    order.save()
     return HttpResponseRedirect('/')
 def CancelledView(request):
     return HttpResponseRedirect('/addevent')
