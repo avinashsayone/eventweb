@@ -66,8 +66,9 @@ def registerform(request):
             address=log.cleaned_data['address']
 
             phonenumber=log.cleaned_data['phonenumber']
+            email=log.cleaned_data['email']
 
-            a=register(username=user,name=name,age=age,password=password,address=address,phonenumber=phonenumber)
+            a=register(username=user,name=name,age=age,password=password,address=address,phonenumber=phonenumber,email=email)
             a.save()
         s=(user,name,age,password,address,phonenumber)
     return HttpResponseRedirect('/login')

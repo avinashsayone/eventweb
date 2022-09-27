@@ -8,6 +8,7 @@ class Register(forms.Form):
 	phonenumber=forms.CharField(max_length=20)
 	username=forms.CharField(max_length=100)
 	password=forms.CharField(widget=forms.PasswordInput())
+	email = forms.EmailField()
 
 class Addevent(forms.Form):
     event_name=forms.CharField(max_length=20)

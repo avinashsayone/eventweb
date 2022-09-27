@@ -10,6 +10,7 @@ class register(models.Model):
     age=models.CharField(max_length=3)
     address=models.TextField()
     phonenumber=models.CharField(max_length=20)
+    email=models.EmailField(max_length=50,blank=True,null=True)
     username=models.CharField(max_length=200)
     password=models.CharField(max_length=20)
     def __str__(self):
@@ -52,7 +53,7 @@ class OrderDetail(models.Model):
     product = models.ForeignKey(
         to=event_details,
         verbose_name='Product',
-        on_delete=models.PROTECT
+        on_delete=models.CASCADE
     )
 
     amount = models.IntegerField(
