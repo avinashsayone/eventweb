@@ -67,6 +67,17 @@
                                 </div>
                             </div>
                         </form>
+                        {% if messages %}
+                            <!-- {% for message in messages %} -->
+                          <div class="alert {{ message.tags }} alert-dismissible" role="alert" style="background: #FDEDED;padding: 20px;width: 300px;margin-left: 90px; border-color:mintcream;padding: 10px;">
+                            <!-- <button type="button" class="close" data-dismiss="alert" aria-label="Close"> -->
+                              <!-- <span aria-hidden="true" >&times;</span>
+                            </button> -->&nbsp;&nbsp;
+                            <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+                            {{ message }}
+                          </div>
+                        <!-- {% endfor %} -->
+                        {% endif %}
                     </div>                  
                 </div> 
             </div>
