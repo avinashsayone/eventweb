@@ -24,7 +24,7 @@ from eventmanagementtest import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('event-management/', include('eventmanagementtest.urls')),
-    path('home/', views.index, name='home'),
+    path('', views.index, name='home'),
     # path('home/', TemplateView.as_view(template_name='index.html'), name='home'),
     path('register/', TemplateView.as_view(template_name='register.html'), name='register'),
     path('register-user/', views.registerform, name='registers'),

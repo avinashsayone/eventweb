@@ -188,6 +188,7 @@ def create_checkout_session(request):
     order.product = product[0]
     order.stripe_payment_intent = checkout_session['payment_intent']
     order.amount = int(20 * 100)
+    order.has_paid = True
     order.save()
 
     # return JsonResponse({'data': checkout_session})
