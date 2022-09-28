@@ -1,24 +1,23 @@
-from pathlib import Path
-from django.http import HttpResponseRedirect
-from django.contrib import messages
-from django.shortcuts import render
-from django.shortcuts import redirect
-# Create your views here.
-from django.shortcuts import render
-from django.http import HttpResponse
-from eventmanagementtest.models import OrderDetail, register,event_details
-from eventmanagementtest.form import Register,Addevent
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.views.generic.base import TemplateView
-from django.conf import settings # new
-from django.http.response import JsonResponse,HttpResponse # new
-from django.views.decorators.csrf import csrf_exempt
-from django.urls import reverse
-from django.shortcuts import get_object_or_404
-import stripe
 import json
-from django.core.files.storage import FileSystemStorage
 import os
+from pathlib import Path
+
+import stripe
+from django.conf import settings  # new
+from django.contrib import messages
+from django.core.files.storage import FileSystemStorage
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
+from django.http import HttpResponse, HttpResponseRedirect
+from django.http.response import HttpResponse, JsonResponse  # new
+# Create your views here.
+from django.shortcuts import get_object_or_404, redirect, render
+from django.urls import reverse
+from django.views.decorators.csrf import csrf_exempt
+from django.views.generic.base import TemplateView
+
+from eventmanagementtest.form import Addevent, Register
+from eventmanagementtest.models import OrderDetail, event_details, register
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 def index(request):
@@ -70,9 +69,8 @@ def registerform(request):
             phonenumber=log.cleaned_data['phonenumber']
             email=log.cleaned_data['email']
 
-            a=register(username=user,name=name,age=age,password=password,address=address,phonenumber=phonenumber,email=email)
-            a.save()
-        s=(user,name,age,password,address,phonenumber)
+            register_item=register(username=user,name=name,age=age,password=password,address=address,phonenumber=phonenumber,email=email)
+            register_item.save()
     return HttpResponseRedirect('/login')
 
 def login(request):
